@@ -3,14 +3,17 @@ import {ref,reactive} from 'vue'
 import ListItem from './components/ListItem.vue';
 const form=reactive({todo:'',due:'',type:1})
 const todos=reactive([]);
-const items=ref([]);
+
 const addTodo=()=>{
   todos.push({todo:form.todo,due:form.due,type:form.type})
-  console.log(todos)
   form.todo=''
   form.due=''
   form.type=1
- // console.log(form)
+}
+
+const delTodo=(idx)=>{
+  todos.splice(idx,1)
+  console.log('刪除',idx)
 }
 </script>
 
@@ -30,7 +33,7 @@ const addTodo=()=>{
 </div>
 <div>
  <!-- v-for="todo,idx in todos" :key="idx" ref="items" -->
- <ListItem v-for="todo,idx in todos" :key="idx" ref="items" :todo="todo"/>
+ <ListItem v-for="todo,idx in todos" :key="idx" :todo="todo" @delTodo="delTodo(idx)"/>
 </div>
 </template>
 
