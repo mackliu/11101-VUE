@@ -1,19 +1,16 @@
 <script setup>
-import {reactive} from 'vue'
-
+import {ref,reactive} from 'vue'
+import ListItem from './components/ListItem.vue';
 const form=reactive({todo:'',due:'',type:1})
 const todos=reactive([]);
-
+const items=ref([]);
 const addTodo=()=>{
   todos.push({todo:form.todo,due:form.due,type:form.type})
   console.log(todos)
   form.todo=''
   form.due=''
   form.type=1
-  console.log(form)
-}
-const delTodo=(idx)=>{
-  todos.splice(idx,1)
+ // console.log(form)
 }
 </script>
 
@@ -28,15 +25,12 @@ const delTodo=(idx)=>{
     <option value="2">普通</option>
     <option value="3">不重要</option>
   </select><br>
+  
   <button @click="addTodo">新增</button>
 </div>
 <div>
-  <div class="list-item" v-for="todo,idx in todos" :key="idx">
-    <div>{{ todo.todo }}</div>
-    <div>{{ todo.due }}</div>
-    <div>{{ todo.type }}</div>
-    <button @click="delTodo(idx)">X</button>
-  </div>
+ <!-- v-for="todo,idx in todos" :key="idx" ref="items" -->
+ <ListItem v-for="todo,idx in todos" :key="idx" ref="items" :todo="todo"/>
 </div>
 </template>
 
@@ -44,21 +38,5 @@ const delTodo=(idx)=>{
 .header{
   text-align: center;
 }
-.list-item{
-  border:1px solid #999;
-  display:flex;
-  box-shadow: 0 0 3px #ccc;
-  margin:0.5rem 2rem;
-  padding:0.5rem;
-  font-size:1.5rem
-}
-.list-item > div:nth-child(1){
-  width:12rem;
-}
-.list-item > div:nth-child(2){
-  width:10rem;
-}
-.list-item > div:nth-child(3){
-  width:5rem;
-}
+
 </style>
