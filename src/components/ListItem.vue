@@ -1,41 +1,49 @@
 <script setup>
-import {ref,reactive} from 'vue'
-defineProps({todo:Object})
+import { propsToAttrMap } from '@vue/shared';
+import {ref,reactive,watch} from 'vue'
+const props=defineProps({todo:Object})
 const emits=defineEmits(['delTodo'])
 const item=ref();
+//const form=reactive(props.todo)
 const delTodo=()=>{
     emits('delTodo')
 }
-
+const edit=ref(false)
 
 const editTodo=()=>{
   //console.log(items.value[idx].childNodes)
-  item.value.childNodes[0].innerHTML=`<input type='text' v-model=\"form.todo\" value="${item.value.childNodes[0].innerText}">`
-  item.value.childNodes[1].innerHTML=`<input type='date' v-model=\"form.due\" value="${item.value.childNodes[1].innerText}">`
-  item.value.childNodes[2].innerHTML=`
-  <select name="type"  v-model="form.type">
-    <option value="1">很重要</option>
-    <option value="2">普通</option>
-    <option value="3">不重要</option>
-  </select>
-  `
-  let button=document.createElement('button')
-  let node=document.createTextNode('OK');
-  button.appendChild(node)
+  edit.value=true
 
-  item.value.childNodes[3].remove()
-  item.value.childNodes[3].remove()
-  item.value.appendChild(button)
 }
+const updateTodo=()=>{
+    edit.value=false
+}
+
+
 </script>
 <template>
 
 <div class="list-item" ref="item">
-    <div>{{ todo.todo }}</div>
-    <div>{{ todo.due }}</div>
-    <div>{{ todo.type }}</div>
-    <button @click="editTodo">編輯</button>
-    <button @click="delTodo">X</button>
+    <div>
+        <span v-if="!edit">{{ todo.todo }}</span>
+        <input v-if="edit" type="text" v-model="todo.todo">
+    </div>
+    <div>
+        <span  v-if="!edit">{{ todo.due }}</span>
+        <input v-if="edit" type="date" v-model="todo.due">
+    </div>
+    <div>
+        <span  v-if="!edit">{{ todo.type }}</span>
+
+        <select v-if="edit" name="type"  v-model="todo.type">
+            <option value="1">很重要</option>
+            <option value="2">普通</option>
+            <option value="3">不重要</option>
+        </select>
+    </div>
+    <button  v-if="edit" @click="updateTodo">OK</button>
+    <button  v-if="!edit" @click="editTodo">編輯</button>
+    <button  v-if="!edit" @click="delTodo">X</button>
   </div>
 
 </template>
