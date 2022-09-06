@@ -12,7 +12,9 @@ const addTodo=()=>{
   form.type=1
   console.log(form)
 }
-
+const delTodo=(idx)=>{
+  todos.splice(idx,1)
+}
 </script>
 
 <template>
@@ -33,6 +35,7 @@ const addTodo=()=>{
     <div>{{ todo.todo }}</div>
     <div>{{ todo.due }}</div>
     <div>{{ todo.type }}</div>
+    <button @click="delTodo(idx)">X</button>
   </div>
 </div>
 </template>
